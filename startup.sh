@@ -11,6 +11,7 @@ sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="ipv6.dis
 sudo update-grub
 
 echo 'export PS1="\[$(tput setaf 1)\]\u@\h:\w\$\[$(tput sgr0\] "' >> ~/.bashrc
+echo "set +o history" >> ~/.bashrc
 source ~/.bashrc
 
 sudo sed -i 's/#Port 22/Port 20022/g' /etc/ssh/sshd_config
@@ -23,8 +24,8 @@ sudo apt install apparmor apparmor-utils apparmor-profiles -y
 sudo chkrootkit
 sudo rkhunter --check
 
-sudo vipw | grep 'bin/bash/'
-sudo vigr | grep 'sudo'
+#Enable IPv4 Routing
+sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf && sudo sysctl -p
 
 sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
@@ -53,5 +54,8 @@ cd
 git clone https://github.com/CISOfy/lynis.git
 cd lynis/
 ./lynis audit system
+
+sudo vipw | grep 'bin/bash/'
+sudo vigr | grep 'sudo'
 
 sudo reboot
