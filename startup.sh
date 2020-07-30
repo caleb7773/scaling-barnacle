@@ -13,6 +13,7 @@ sudo apt install apparmor apparmor-utils apparmor-profiles -y
 #Disables IPv6 routing on the box#
 ##################################
 sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 /g' /etc/default/grub
+sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX="ipv6.disable=1 /g' /etc/default/grub
 sudo update-grub
 ################################################
 #Changes colors for Prompt and disables history#
