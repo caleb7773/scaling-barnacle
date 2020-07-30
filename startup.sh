@@ -22,7 +22,7 @@ sudo apt install apparmor apparmor-utils apparmor-profiles -y
 sudo apt install git -y
 sudo su -
 cd
-git clone https://github.com/CISOfy/lynis.gt
+git clone https://github.com/CISOfy/lynis.git
 cd lynis/
 ./lynis audit system
 
