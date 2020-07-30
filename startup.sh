@@ -17,16 +17,16 @@ sudo sed -i 's/Port 22/Port 20022/g' /etc/ssh/sshd_config
 sudo systemctl restart ssh
 
 sudo apt install clamav clamav-daemon -y
-sudo apt install chkrootkit rkhunter
-sudo apt install apparmor apparmor-utils apparmor-profiles
-sudo apt install git
+sudo apt install chkrootkit rkhunter -y
+sudo apt install apparmor apparmor-utils apparmor-profiles -y
+sudo apt install git -y
 sudo su -
 cd
 git clone https://github.com/CISOfy/lynis.gt
 cd lynis/
 ./lynis audit system
 
-sudo apt install aide
+sudo apt install aide -y
 sudo aideinit
 sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 
