@@ -13,7 +13,7 @@ sudo update-grub
 echo 'export PS1="\[$(tput setaf 1)\]\u@\h:\w\$\[$(tput sgr0\] "' >> ~/.bashrc
 source ~/.bashrc
 
-sudo sed -i 's/Port 22/Port 20022/g' /etc/ssh/sshd_config
+sudo sed -i 's/#Port 22/Port 20022/g' /etc/ssh/sshd_config
 sudo systemctl restart ssh
 
 sudo apt install clamav clamav-daemon -y
