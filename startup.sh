@@ -40,6 +40,7 @@ sudo apt install fail2ban -y
 sudo apt install clamav clamav-daemon -y
 sudo apt install chkrootkit rkhunter -y
 sudo apt install apparmor apparmor-utils apparmor-profiles -y
+
 ##################################
 #Disables IPv6 routing on the box#
 ##################################
