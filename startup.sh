@@ -1,4 +1,5 @@
 #!/bin/bash
+trap 'echo "Cleaning up!"; shred -u /tmp/users; exit' INT
 ssh_port() {
   read -p "SSH Port: " ssh_port_num
 }
@@ -103,6 +104,6 @@ clear
 #Restarts the box#
 ##################
 cat /tmp/users
-sudo rm /tmp/users
+sudo shred -u /tmp/users
 
 sudo reboot
