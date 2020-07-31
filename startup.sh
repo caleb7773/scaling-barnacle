@@ -1,25 +1,32 @@
 #!/bin/bash
 trap 'echo "Cleaning up!"; shred -u /tmp/users; exit' INT
-ssh_port() {
-  read -p "SSH Port: " ssh_port_num
-}
-ssh_port
 sudo apt install whois -y
+clear
+intro_questions() {
+  read -p "SSH Port: " ssh_port_num
+echo ' '
+
 read -p "New Username: " user_name
+echo ' '
 pass_hash=$(read -sp "New User Password: " | mkpasswd -m SHA-512 -s)
+echo ' '
+}
+####################################################################
+####################################################################
+
+while [ "${ynvar:-n}" == "n" ]
+do
+        intro_questions 
+          echo "You are about to change the SSH port to ${ssh_port_num}"
+          echo "You are about to build the following user as Root: ${user_name}"
+          read -p "Are you sure? (Y/n) " ynvar
+          #Grab y or n
+          #changes input to lower case to match if line
+          ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
+          clear
+done
 sudo useradd -m -s /bin/bash -G sudo -U -p "${pass_hash}" "${user_name}"
-####################################################################
-####################################################################
-read -p "Are you sure? (Y/n) " ynvar
-#Grab y or n
-#changes input to lower case to match if line
-ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
-if [ "${ynvar:-y}" == "y" ]
-then
-        echo "YES!"
-else
-        echo "No!"
-fi
+
 ####################################################################
 ####################################################################
 
@@ -50,11 +57,6 @@ source ~/.bashrc
 ###############################
 sudo sed -i "s/#Port 22/Port ${ssh_port_num}/g" /etc/ssh/sshd_config
 sudo systemctl restart ssh
-###############################
-#Start CHKRootkit and RKHunter#
-###############################
-sudo chkrootkit
-sudo rkhunter --check
 #####################
 #Enable IPv4 Routing#
 #####################
@@ -89,21 +91,18 @@ EOF
 #############################
 sudo systemctl restart fail2ban
 sudo systemctl restart ssh
-#################################
-#Starts Aide and builds database#
-#################################
-sudo apt install aide -y
-sudo aideinit
-sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 #########################
 #Installs Lynis from GIT#
 #########################
 sudo apt install git -y
-sudo su -
-cd
-git clone https://github.com/CISOfy/lynis.git
-cd lynis/
-./lynis audit system
+sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && ./lynis audit system"
+#################################
+#Starts Aide and builds database#
+#Run at the end after all change#
+#################################
+sudo apt install aide -y
+sudo aideinit
+sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 ###################################
 #Displays all users who can log in#
 ###################################
@@ -117,7 +116,7 @@ echo ' ' >> /tmp/users
 ########################################
 echo 'Users who can SUDO on your machine:' >> /tmp/users
 echo ' ' >> /tmp/users
-cat /etc/group | grep 'sudo' | cut -d ':' -f1 | tee -a /tmp/users
+grep 'sudo' /etc/group | cut -d ':' -f4 | tee -a /tmp/users
 clear
 ##################
 #Restarts the box#
