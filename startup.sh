@@ -1,4 +1,8 @@
 #!/bin/bash
+ssh_port() {
+  read -p "SSH Port: " ssh_port_num
+}
+ssh_port
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 sudo apt install htop -y
 sudo apt install tree -y
@@ -24,7 +28,7 @@ source ~/.bashrc
 ###############################
 #Changes the SSH port to 20022#
 ###############################
-sudo sed -i 's/#Port 22/Port 20022/g' /etc/ssh/sshd_config
+sudo sed -i "s/#Port 22/Port ${ssh_port_num}/g" /etc/ssh/sshd_config
 sudo systemctl restart ssh
 ###############################
 #Start CHKRootkit and RKHunter#
@@ -53,7 +57,7 @@ sudo sed -i 's/^backend = %(sshd_backend)s//g' /etc/fail2ban/jail.local
 sudo tee -a /etc/fail2ban/jail.local <<EOF
 
 [sshd]
-port = 20022
+port = ${ssh_port_num}
 enabled = true
 filter = sshd
 logpath = /var/log/auth.log
