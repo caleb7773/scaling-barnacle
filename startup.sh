@@ -16,7 +16,8 @@ echo ' '
 
 while [ "${ynvar:-n}" == "n" ]
 do
-        intro_questions 
+        intro_questions
+          clear
           echo "You are about to change the SSH port to ${ssh_port_num}"
           echo "You are about to build the following user as Root: ${user_name}"
           read -p "Are you sure? (Y/n) " ynvar
