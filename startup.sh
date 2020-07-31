@@ -103,4 +103,5 @@ clear
 #Restarts the box#
 ##################
 cat /tmp/users
+sudo rm /tmp/users
 sudo reboot
