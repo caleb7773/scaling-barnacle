@@ -89,7 +89,7 @@ cd lynis/
 ###################################
 echo 'Users who can log onto your machine:' >> /tmp/users
 echo ' ' >> /tmp/users
-cat /etc/passwd | grep 'bin/bash' | tee -a /tmp/users
+cat /etc/passwd | grep 'bin/bash' | cut -d ':' -f1 | tee -a /tmp/users
 echo ' ' >> /tmp/users
 echo ' ' >> /tmp/users
 ########################################
@@ -97,11 +97,12 @@ echo ' ' >> /tmp/users
 ########################################
 echo 'Users who can SUDO on your machine:' >> /tmp/users
 echo ' ' >> /tmp/users
-cat /etc/group | grep 'sudo' | tee -a /tmp/users
+cat /etc/group | grep 'sudo' | cut -d ':' -f1 | tee -a /tmp/users
 clear
 ##################
 #Restarts the box#
 ##################
 cat /tmp/users
 sudo rm /tmp/users
+
 sudo reboot
