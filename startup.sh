@@ -18,7 +18,7 @@ sudo update-grub
 ################################################
 #Changes colors for Prompt and disables history#
 ################################################
-echo 'export PS1="\[$(tput setaf 1)\]\u@\h:\w\$\[$(tput sgr0\] "' >> ~/.bashrc
+echo 'export PS1="\[$(tput setaf 4; tput bold; tput rev)\]\u@\h:\w\$\[$(tput sgr0\] "' >> ~/.bashrc
 echo "set +o history" >> ~/.bashrc
 source ~/.bashrc
 ###############################
@@ -35,7 +35,6 @@ sudo rkhunter --check
 #Enable IPv4 Routing#
 #####################
 sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf && sudo sysctl -p
-
 ###########################################
 #Setting up Fail2ban for SSH on port 20022#
 ###########################################
