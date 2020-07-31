@@ -36,20 +36,34 @@ sudo rkhunter --check
 #####################
 sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf && sudo sysctl -p
 
+###########################################
+#Setting up Fail2ban for SSH on port 20022#
+###########################################
 sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-#
-#
-#Figure out how to edit the jail.local file with the following
-#
-#port = 20022
-#enabled = true
-#filter = sshd
-#logpath = /var/log/auth.log
-#maxretry = 3
-#bantime = 120
-#
-#
+#############################################################
+#Removing the existing SSH commands from the jail.local file#
+#############################################################
+sudo sed -i 's/^\[sshd\]//g' /etc/fail2ban/jail.local
+sudo sed -i 's/^port    = ssh//g' /etc/fail2ban/jail.local
+sudo sed -i 's/^logpath = %(sshd_log)s//g' /etc/fail2ban/jail.local
+sudo sed -i 's/^backend = %(sshd_backend)s//g' /etc/fail2ban/jail.local
+##################################################
+#Appending the new SSH config into the jail.local#
+##################################################
+sudo tee -a /etc/fail2ban/jail.local <<EOF
+
+[sshd]
+port = 20022
+enabled = true
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 120
+EOF
+#############################
+#Restarting Fail2Ban and SSH#
+#############################
 sudo systemctl restart fail2ban
 sudo systemctl restart ssh
 #################################
