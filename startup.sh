@@ -95,7 +95,7 @@ sudo systemctl restart ssh
 #Installs Lynis from GIT#
 #########################
 sudo apt install git -y
-sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && ./lynis audit system"
+sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && ./lynis audit system --quiet"
 #################################
 #Starts Aide and builds database#
 #Run at the end after all change#
@@ -145,7 +145,8 @@ clear
 cat /tmp/users
 echo ' '
 echo ' '
-echo 'Now you know how has access to your box.'
+echo 'Now you know who has access to your box.'
+echo ' '
 read -p "Press Enter to reboot your machine....." enter
 sudo shred -u /tmp/users
 
