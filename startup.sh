@@ -103,6 +103,27 @@ sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && 
 sudo apt install aide -y
 sudo aideinit
 sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
+
+
+
+
+##########################
+#Edit these for a baseline#
+#sudo iptables -A INPUT -p icmp -j ACCEPT
+#sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+#sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+#sudo iptables -A INPUT -i lo -j ACCEPT
+#sudo iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
+#sudo iptables -A OUTPUT -m conntrack --ctstate INVALID -j DROP
+#sudo iptables -A OUTPUT -o lo -j ACCEPT
+#sudo iptables -A OUTPUT -p icmp -j ACCEPT
+#sudo iptables -P OUTPUT DROP
+#sudo iptables -P INPUT DROP
+#####################################################
+
+
+
+
 ###################################
 #Displays all users who can log in#
 ###################################
