@@ -49,7 +49,7 @@ sudo update-grub
 ################################################
 #Changes colors for Prompt and disables history#
 ################################################
-echo 'export PS1="\[$(tput setaf 4; tput bold; tput rev)\]\u@\h:\w\$\[$(tput sgr0\] "' >> ~/.bashrc
+echo 'export PS1="\[$(tput setaf 4; tput bold; tput rev)\]\u@\h:\w\$\[$(tput sgr0\)] "' >> ~/.bashrc
 echo "set +o history" >> ~/.bashrc
 source ~/.bashrc
 ###############################
