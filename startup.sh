@@ -4,6 +4,25 @@ ssh_port() {
   read -p "SSH Port: " ssh_port_num
 }
 ssh_port
+sudo apt install whois -y
+read -p "New Username: " user_name
+pass_hash=$(read -sp "New User Password: " | mkpasswd -m SHA-512 -s)
+sudo useradd -m -s /bin/bash -G sudo -U -p "${pass_hash}" "${user_name}"
+####################################################################
+####################################################################
+read -p "Are you sure? (Y/n) " ynvar
+#Grab y or n
+#changes input to lower case to match if line
+ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
+if [ "${ynvar:-y}" == "y" ]
+then
+        echo "YES!"
+else
+        echo "No!"
+fi
+####################################################################
+####################################################################
+
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 sudo apt install htop -y
 sudo apt install tree -y
@@ -104,6 +123,10 @@ clear
 #Restarts the box#
 ##################
 cat /tmp/users
+echo ' '
+echo ' '
+echo 'Now you know how has access to your box.'
+read -p "Press Enter to reboot your machine....." enter
 sudo shred -u /tmp/users
 
 sudo reboot
