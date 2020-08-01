@@ -152,16 +152,22 @@ sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 
 ##########################
 #Edit these for a baseline#
-#sudo iptables -A INPUT -p icmp -j ACCEPT
-#sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-#sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
-#sudo iptables -A INPUT -i lo -j ACCEPT
-#sudo iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
-#sudo iptables -A OUTPUT -m conntrack --ctstate INVALID -j DROP
-#sudo iptables -A OUTPUT -o lo -j ACCEPT
-#sudo iptables -A OUTPUT -p icmp -j ACCEPT
-#sudo iptables -P OUTPUT DROP
-#sudo iptables -P INPUT DROP
+sudo iptables -A INPUT -p icmp -j ACCEPT
+sudo iptables -A INPUT -p tcp -m tcp --dport ${ssh_port_num} -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -m conntrack --ctstate INVALID -j DROP
+sudo iptables -A OUTPUT -p tcp -m multiport --dport 53,80,443 -j ACCEPT
+sudo iptables -A OUTPUT -p udp -m multiport --dport 53,123 -j ACCEPT
+sudo iptables -A OUTPUT -o lo -j ACCEPT
+sudo iptables -A OUTPUT -p icmp -j ACCEPT
+sudo iptables -P OUTPUT DROP
+sudo iptables -P INPUT DROP
+
+sudo apt-get install iptables-persistent -y
+sudo iptables-save | sudo tee /etc/iptables/rules.v4
 #####################################################
 
 
