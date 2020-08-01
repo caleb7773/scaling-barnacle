@@ -3,12 +3,11 @@ trap 'echo "Cleaning up!"; shred -u /tmp/users; exit' INT
 sudo apt install whois -y
 clear
 intro_questions() {
-  read -p "SSH Port: " ssh_port_num
-echo ' '
-
-read -p "New Username: " user_name
-echo ' '
-pass_hash=$(read -sp "New User Password: " | mkpasswd -m SHA-512 -s)
+      read -p "SSH Port: " ssh_port_num
+      echo ' '
+      read -p "New Username: " user_name
+      echo ' '
+      pass_hash=$(read -sp "New User Password: " | mkpasswd -m SHA-512 -s)
 echo ' '
 }
 ####################################################################
@@ -52,7 +51,6 @@ sudo update-grub
 #Changes colors for Prompt and disables history#
 ################################################
 echo 'export PS1="\[$(tput setaf 3; tput bold; tput rev)\]\u@\h:\w\$\[$(tput sgr0)\] "' >> ~/.bashrc
-echo "set +o history" >> ~/.bashrc
 source ~/.bashrc
 ###############################
 #Changes the SSH port to 20022#
