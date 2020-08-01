@@ -1,5 +1,24 @@
 #!/bin/bash
 trap 'echo "Cleaning up!"; shred -u /tmp/users; exit' INT
+##########################
+#Edit these for a baseline#
+sudo iptables -A INPUT -p icmp -j ACCEPT
+sudo iptables -A INPUT -p tcp -m tcp --dport ${ssh_port_num} -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -m conntrack --ctstate INVALID -j DROP
+sudo iptables -A OUTPUT -p tcp -m multiport --dport 53,80,443 -j ACCEPT
+sudo iptables -A OUTPUT -p udp -m multiport --dport 53,123 -j ACCEPT
+sudo iptables -A OUTPUT -o lo -j ACCEPT
+sudo iptables -A OUTPUT -p icmp -j ACCEPT
+sudo iptables -P OUTPUT DROP
+sudo iptables -P INPUT DROP
+
+sudo apt-get install iptables-persistent -y
+sudo iptables-save | sudo tee /etc/iptables/rules.v4
+#####################################################
 ssh_port_input() {
 	while :; do
 		left=$(echo '>>>>')
@@ -74,15 +93,25 @@ user_creation
 #Beginning Program Update and Downloads#
 ########################################
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
+read -p "Press Enter to continue..."
 sudo apt install clamav clamav-daemon -y
+read -p "Press Enter to continue..."
 sudo apt install chkrootkit rkhunter -y
+read -p "Press Enter to continue..."
 sudo apt install apparmor apparmor-utils apparmor-profiles -y
+read -p "Press Enter to continue..."
 sudo apt install htop -y
+read -p "Press Enter to continue..."
 sudo apt install tree -y
+read -p "Press Enter to continue..."
 sudo apt install mlocate -y
+read -p "Press Enter to continue..."
 sudo apt install cryptsetup -y
+read -p "Press Enter to continue..."
 sudo apt install nmap -y
+read -p "Press Enter to continue..."
 sudo apt install fail2ban -y
+read -p "Press Enter to continue..."
 
 ##################################
 #Disables IPv6 routing on the box#
@@ -138,41 +167,16 @@ sudo systemctl restart ssh
 #Installs Lynis from GIT#
 #########################
 sudo apt install git -y
+read -p "Press Enter to continue..."
 sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && ./lynis audit system --quiet"
 #################################
 #Starts Aide and builds database#
 #Run at the end after all change#
 #################################
 sudo apt install aide -y
+read -p "Press Enter to continue..."
 sudo aideinit
 sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
-
-
-
-
-##########################
-#Edit these for a baseline#
-sudo iptables -A INPUT -p icmp -j ACCEPT
-sudo iptables -A INPUT -p tcp -m tcp --dport ${ssh_port_num} -j ACCEPT
-sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
-sudo iptables -A INPUT -i lo -j ACCEPT
-sudo iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
-sudo iptables -A OUTPUT -m conntrack --ctstate INVALID -j DROP
-sudo iptables -A OUTPUT -p tcp -m multiport --dport 53,80,443 -j ACCEPT
-sudo iptables -A OUTPUT -p udp -m multiport --dport 53,123 -j ACCEPT
-sudo iptables -A OUTPUT -o lo -j ACCEPT
-sudo iptables -A OUTPUT -p icmp -j ACCEPT
-sudo iptables -P OUTPUT DROP
-sudo iptables -P INPUT DROP
-
-sudo apt-get install iptables-persistent -y
-sudo iptables-save | sudo tee /etc/iptables/rules.v4
-#####################################################
-
-
-
-
 ###################################
 #Displays all users who can log in#
 ###################################
