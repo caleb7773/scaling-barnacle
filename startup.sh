@@ -2,33 +2,19 @@
 trap 'echo "Cleaning up!"; shred -u /tmp/users; exit' INT
 sudo apt install whois -y
 clear
-
-if [ $(id -u) -eq 0 ]; then
+intro_questions() {
+      read -p "SSH Port: " ssh_port_num
+      echo ' '
       read -p "Enter username : " username
       read -s -p "Enter password : " password
       egrep "^$username" /etc/passwd >/dev/null
       if [ $? -eq 0 ]; then
+            echo ' '
             echo "$username exists!"
             exit 1
       else
             pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-            useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
-            [ $? -eq 0 ] && echo "User has been added to the system!" || echo "Failed to add a user!"
       fi
-else
-      echo "Only root may add a user to the system."
-      exit 2
-fi
-read -p "Did it work?" test
-
-
-
-intro_questions() {
-      read -p "SSH Port: " ssh_port_num
-      echo ' '
-      read -p "New Username: " user_name
-      echo ' '
-      pass_hash=$(read -sp "New User Password: " | mkpasswd -m SHA-512 -s)
 echo ' '
 }
 ####################################################################
@@ -39,14 +25,15 @@ do
         intro_questions
           clear
           echo "You are about to change the SSH port to ${ssh_port_num}"
-          echo "You are about to build the following user as Root: ${user_name}"
+          echo "You are about to build the following user as Root: ${username}"
           read -p "Are you sure? (Y/n) " ynvar
           #Grab y or n
           #changes input to lower case to match if line
           ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
           clear
 done
-sudo useradd -m -s /bin/bash -G sudo -U -p "${pass_hash}" "${user_name}"
+useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
+[ $? -eq 0 ] && echo "User has been added to the system!" || echo "Failed to add a user!"
 
 ####################################################################
 ####################################################################
