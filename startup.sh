@@ -14,6 +14,8 @@ intro_questions() {
             exit 1
       else
             pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+            sudo useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
+            [ $? -eq 0 ] && echo "User has been added to the system!" || echo "Failed to add a user!"
       fi
 echo ' '
 }
@@ -31,9 +33,8 @@ do
           #changes input to lower case to match if line
           ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
           clear
+          echo 'this current does nothing and everything is immediately applied in the function'
 done
-sudo useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
-[ $? -eq 0 ] && echo "User has been added to the system!" || echo "Failed to add a user!"
 
 ####################################################################
 ####################################################################
