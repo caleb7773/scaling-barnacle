@@ -75,6 +75,7 @@ user_creation() {
         echo "${username} has been added to the system!"
 	echo ' '
 	echo "${username} is a root user!"
+	read -p "Press Enter to continue...."
 }
 clear && echo ' ' && echo "Hello! First can I get root access please?" && echo ' '
 sudo ls -l /tmp >/dev/null
