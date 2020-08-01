@@ -1,44 +1,78 @@
 #!/bin/bash
 trap 'echo "Cleaning up!"; shred -u /tmp/users; exit' INT
-sudo apt install whois -y
-clear
-intro_questions() {
-      read -p "SSH Port: " ssh_port_num
-      echo ' '
-      read -p "Enter username : " username
-      read -s -p "Enter password : " password
-      egrep "^$username" /etc/passwd >/dev/null
-      if [ $? -eq 0 ]; then
-            echo ' '
-            echo "$username exists!"
-            exit 1
-      else
-            pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-            sudo useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
-            [ $? -eq 0 ] && echo "User has been added to the system!" || echo "Failed to add a user!"
-      fi
-echo ' '
+ssh_port_input() {
+	while :; do
+		left=$(echo '>>>>')
+		right=$(echo '<<<<')
+		echo 'Which port would you like SSH to run on?'
+		read -p "SSH Port (2000 - 65000) : " ssh_port_num
+		echo ' '
+  		[[ $ssh_port_num =~ ^[0-9]+$ ]] || { echo "Are you high!? ${left} ${ssh_port_num} ${right} is not a valid port...."; echo ' '; continue; }
+  	if ((ssh_port_num >= 2000 && ssh_port_num <= 65000)); then
+		echo ' '
+		echo "You chose to run SSH on port $ssh_port_num"
+		echo ' '
+   		read -p "Press Enter to continue..." 
+		break
+  	else
+		echo ' '
+   		 echo "Number out of range, try again"
+		 echo ' '
+  	fi
+done	
 }
-####################################################################
-####################################################################
+username_input() {
+	echo 'You need to create a user.'
+	read -p "Enter username : " username
+}
+username_check() {
+	egrep "^$username" /etc/passwd >/dev/null
+	while [ $? -eq 0 ]
+	do 
+		echo ' '
+		echo "${username} is already a user!"
+		echo ' '
+		username_input
+	done
+}
+password_input() {
+	echo "What password do you want to user for ${username}?"
+	read -sp "Enter password : " password
+	echo ' '
+	read -sp "Please confirm : " password2
+	echo ' '
+}
+password_check() {
+	while [ ${password:-1} != ${password2} ]
+	do 
+		echo "Your entries do not match!"
+		echo ' '
+		password_input
+	done
+}
+user_creation() {
+	pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+        sudo useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
+        echo "${username} has been added to the system!"
+	echo ' '
+	echo "${username} is a root user!"
+}
+clear && echo ' ' && echo "Hello! First can I get root access please?" && echo ' '
+sudo ls -l /tmp >/dev/null
+clear && echo ' '
+ssh_port_input
+clear && echo ' '
+username_input
+username_check
+clear && echo ' '
+password_input
+password_check
+clear && echo ' '
+user_creation
 
-while [ "${ynvar:-n}" == "n" ]
-do
-        intro_questions
-          clear
-          echo "You are about to change the SSH port to ${ssh_port_num}"
-          echo "You are about to build the following user as Root: ${username}"
-          read -p "Are you sure? (y/N) " ynvar
-          #Grab y or n
-          #changes input to lower case to match if line
-          ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
-          clear
-          echo 'this current does nothing and everything is immediately applied in the function'
-done
-
-####################################################################
-####################################################################
-
+########################################
+#Beginning Program Update and Downloads#
+########################################
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 sudo apt install clamav clamav-daemon -y
 sudo apt install chkrootkit rkhunter -y
