@@ -32,7 +32,7 @@ do
           ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
           clear
 done
-useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
+sudo useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
 [ $? -eq 0 ] && echo "User has been added to the system!" || echo "Failed to add a user!"
 
 ####################################################################
