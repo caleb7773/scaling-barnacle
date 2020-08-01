@@ -28,7 +28,7 @@ do
           clear
           echo "You are about to change the SSH port to ${ssh_port_num}"
           echo "You are about to build the following user as Root: ${username}"
-          read -p "Are you sure? (Y/n) " ynvar
+          read -p "Are you sure? (y/N) " ynvar
           #Grab y or n
           #changes input to lower case to match if line
           ynvar=$(echo $ynvar | tr '[A-Z]' '[a-z]')
