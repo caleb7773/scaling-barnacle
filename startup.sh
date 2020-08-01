@@ -193,8 +193,6 @@ sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && 
 sudo apt install aide -y
 echo ' '
 read -p "Press ENTER to continue..."
-sudo aideinit
-sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 ###################################
 #Displays all users who can log in#
 ###################################
@@ -220,5 +218,14 @@ echo 'Now you know who has access to your box.'
 echo ' '
 read -p "Press Enter to reboot your machine....." enter
 sudo shred -u /tmp/users
+echo 'Once AIDE completes building the database'
+echo '     your box will restart itself'
+echo '     and you will be super secure!'
+echo ' '
+##################################
+#Builds AIDE databse and moves it#
+##################################
+sudo aideinit
+sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 
 sudo reboot
