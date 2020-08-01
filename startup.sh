@@ -18,6 +18,10 @@ sudo iptables -P INPUT DROP
 
 sudo apt-get install iptables-persistent -y
 sudo iptables-save | sudo tee /etc/iptables/rules.v4
+clear
+sudo iptables -nvL
+echo ' '
+read -p "Press ENTER to continue..."
 #####################################################
 ssh_port_input() {
 	while :; do
@@ -75,7 +79,8 @@ user_creation() {
         echo "${username} has been added to the system!"
 	echo ' '
 	echo "${username} is a root user!"
-	read -p "Press Enter to continue...."
+	echo ' '
+	read -p "Press ENTER to continue..."
 }
 clear && echo ' ' && echo "Hello! First can I get root access please?" && echo ' '
 sudo ls -l /tmp >/dev/null
@@ -94,25 +99,35 @@ user_creation
 #Beginning Program Update and Downloads#
 ########################################
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install clamav clamav-daemon -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install chkrootkit rkhunter -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install apparmor apparmor-utils apparmor-profiles -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install htop -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install tree -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install mlocate -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install cryptsetup -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install nmap -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo apt install fail2ban -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 
 ##################################
 #Disables IPv6 routing on the box#
@@ -168,14 +183,16 @@ sudo systemctl restart ssh
 #Installs Lynis from GIT#
 #########################
 sudo apt install git -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && ./lynis audit system --quiet"
 #################################
 #Starts Aide and builds database#
 #Run at the end after all change#
 #################################
 sudo apt install aide -y
-read -p "Press Enter to continue..."
+echo ' '
+read -p "Press ENTER to continue..."
 sudo aideinit
 sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 ###################################
