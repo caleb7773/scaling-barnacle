@@ -39,15 +39,15 @@ sudo useradd -m -s /bin/bash -G sudo -p "$pass" "$username"
 ####################################################################
 
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
+sudo apt install clamav clamav-daemon -y
+sudo apt install chkrootkit rkhunter -y
+sudo apt install apparmor apparmor-utils apparmor-profiles -y
 sudo apt install htop -y
 sudo apt install tree -y
 sudo apt install mlocate -y
 sudo apt install cryptsetup -y
 sudo apt install nmap -y
 sudo apt install fail2ban -y
-sudo apt install clamav clamav-daemon -y
-sudo apt install chkrootkit rkhunter -y
-sudo apt install apparmor apparmor-utils apparmor-profiles -y
 
 ##################################
 #Disables IPv6 routing on the box#
