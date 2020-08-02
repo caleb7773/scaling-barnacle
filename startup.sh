@@ -217,7 +217,7 @@ echo ' '
 echo ' '
 echo 'Now you know who has access to your box.'
 echo ' '
-read -p "Press Enter to reboot your machine....." enter
+read -p "Press Enter to continue....."
 sudo shred -u /tmp/users
 echo 'Once AIDE completes building the database'
 echo '     your box will restart itself'
@@ -228,5 +228,8 @@ echo ' '
 ##################################
 sudo aideinit
 sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
-
+echo ' '
+echo 'You are now secure!'
+echo ' '
+read -p 'Press ENTER to restart your computer'
 sudo reboot
