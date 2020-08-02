@@ -251,5 +251,7 @@ sudo aideinit
 sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 echo ' '
 echo 'You are now secure!'
+echo ' '
+echo 'The box will now reboot!'
 enter_continue
 sudo reboot
