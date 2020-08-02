@@ -113,13 +113,13 @@ sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 echo ' '
 echo ' System updated, upgraded and ready to roll!'
 enter_continue
-sudo apt install clamav clamav-daemon -y
-echo ' '
-echo ' ClamAV installed with Daemon!'
-enter_continue
 sudo apt install chkrootkit rkhunter -y
 echo ' '
 echo ' CHKRootKit and RKHunter Installed!'
+enter_continue
+sudo apt install clamav clamav-daemon -y
+echo ' '
+echo ' ClamAV installed with Daemon!'
 enter_continue
 sudo apt install apparmor apparmor-utils apparmor-profiles -y
 echo ' '
