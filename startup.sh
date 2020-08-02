@@ -1,6 +1,11 @@
 #!/bin/bash
 trap 'echo "Cleaning up!"; shred -u /tmp/users; exit' INT
 #####################################################
+enter_continue() {
+	echo ' '
+	read -p 'Press ENTER to continue....'
+	clear
+}
 ssh_port_input() {
 	while :; do
 		left=$(echo '>>>>')
@@ -96,61 +101,50 @@ clear
 sudo iptables -nvL
 echo ' '
 echo ' IPTABLES built!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 ########################################
 #Beginning Program Update and Downloads#
 ########################################
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 echo ' '
 echo ' System updated, upgraded and ready to roll!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install clamav clamav-daemon -y
 echo ' '
 echo ' ClamAV installed with Daemon!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install chkrootkit rkhunter -y
 echo ' '
 echo ' CHKRootKit and RKHunter Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install apparmor apparmor-utils apparmor-profiles -y
 echo ' '
 echo ' AppArmor Installed with Utils and Profiles!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install htop -y
 echo ' '
 echo ' HTOP Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install tree -y
 echo ' '
 echo ' Tree Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install mlocate -y
 echo ' '
 echo ' MLocate Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install cryptsetup -y
 echo ' '
 echo ' CryptSetup Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install nmap -y
 echo ' '
 echo ' NMAP Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo apt install fail2ban -y
 echo ' '
 echo ' Fail2Ban Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 
 ##################################
 #Disables IPv6 routing on the box#
@@ -208,8 +202,7 @@ sudo systemctl restart ssh
 sudo apt install git -y
 echo ' '
 echo ' GIT Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && ./lynis audit system --quiet"
 #################################
 #Starts Aide and builds database#
@@ -218,8 +211,7 @@ sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && 
 sudo apt install aide -y
 echo ' '
 echo ' AIDE Installed!'
-echo ' '
-read -p "Press ENTER to continue..."
+enter_continue
 ###################################
 #Displays all users who can log in#
 ###################################
@@ -242,9 +234,8 @@ cat /tmp/users
 echo ' '
 echo ' '
 echo 'Now you know who has access to your box.'
-echo ' '
-read -p "Press Enter to continue....."
 sudo shred -u /tmp/users
+enter_continue
 echo 'Once AIDE completes building the database'
 echo '     your box will restart itself'
 echo '     and you will be super secure!'
@@ -256,6 +247,5 @@ sudo aideinit
 sudo mv /var/lib/aide/aide.db.nw /var/lib/aide/aide.db
 echo ' '
 echo 'You are now secure!'
-echo ' '
-read -p 'Press ENTER to restart your computer'
+enter_continue
 sudo reboot
