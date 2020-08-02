@@ -95,38 +95,60 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 clear
 sudo iptables -nvL
 echo ' '
+echo ' IPTABLES built!'
+echo ' '
 read -p "Press ENTER to continue..."
 ########################################
 #Beginning Program Update and Downloads#
 ########################################
 sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 echo ' '
+echo ' System updated, upgraded and ready to roll!'
+echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install clamav clamav-daemon -y
+echo ' '
+echo ' ClamAV installed with Daemon!'
 echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install chkrootkit rkhunter -y
 echo ' '
+echo ' CHKRootKit and RKHunter Installed!'
+echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install apparmor apparmor-utils apparmor-profiles -y
+echo ' '
+echo ' AppArmor Installed with Utils and Profiles!'
 echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install htop -y
 echo ' '
+echo ' HTOP Installed!'
+echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install tree -y
+echo ' '
+echo ' Tree Installed!'
 echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install mlocate -y
 echo ' '
+echo ' MLocate Installed!'
+echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install cryptsetup -y
+echo ' '
+echo ' CryptSetup Installed!'
 echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install nmap -y
 echo ' '
+echo ' NMAP Installed!'
+echo ' '
 read -p "Press ENTER to continue..."
 sudo apt install fail2ban -y
+echo ' '
+echo ' Fail2Ban Installed!'
 echo ' '
 read -p "Press ENTER to continue..."
 
@@ -185,6 +207,8 @@ sudo systemctl restart ssh
 #########################
 sudo apt install git -y
 echo ' '
+echo ' GIT Installed!'
+echo ' '
 read -p "Press ENTER to continue..."
 sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && ./lynis audit system --quiet"
 #################################
@@ -192,6 +216,8 @@ sudo su -c "cd && git clone https://github.com/CISOfy/lynis.git && cd lynis/ && 
 #Run at the end after all change#
 #################################
 sudo apt install aide -y
+echo ' '
+echo ' AIDE Installed!'
 echo ' '
 read -p "Press ENTER to continue..."
 ###################################
