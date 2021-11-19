@@ -1,0 +1,86 @@
+#!/bin/bash
+
+helper() {
+	echo
+	echo " Invalid Script utilization..."
+	echo
+	echo " Usages:"
+        echo "	sysinfo run"
+	echo "	sysinfo loop"
+	echo
+	exit 1
+}
+
+if [ ${#} -ne 1 ];
+then
+	helper
+fi
+
+if [ ${1} != "run" ] && [ ${1} != "loop" ];
+then
+	helper
+fi
+
+	
+sysinfo() {
+	
+largestdrive=$(df | awk '{print $2}' | sort -n | tail -n 1)
+usedspace=$(df | grep ${largestdrive} | awk '{print $5}' | cut -d '%' -f 1)
+freespace=$(expr 100 - ${usedspace})
+freecpu=$(top -b -n 1 | grep Cpu | cut -d ' ' -f 11)
+while [[ ${freecpu} == *"id"* ]];
+do
+	freecpu=$(top -b -n 1 | grep Cpu | cut -d ' ' -f 11)
+done
+calculatedcpu=$(echo ${freecpu} | cut -d '.' -f 1)
+usedcpu=$(expr 100 - ${calculatedcpu})
+portforward=$(grep net.ipv4.ip_forward /etc/sysctl.conf)
+if [[ ${portforward} == *"#"* ]];
+then
+	forwarding=Disabled
+else
+	forwarding=Enabled
+fi
+sshport=$(grep 'Port ' /etc/ssh/sshd_config)
+if [[ ${sshport} == *"#"* ]];
+then
+	sshport="22"
+else
+	sshport=$(echo ${sshport} | cut -d ' ' -f2)
+fi
+clear
+}
+
+sysoutput(){
+echo
+echo "          Hostname: $(hostname) "
+echo "      Current User: $(whoami)"
+echo
+echo "   CPU Utilization: ${usedcpu}%"
+echo "        Used Space: ${usedspace}%"	
+echo
+echo "      GW Interface: $(ip r | grep default | cut -d ' ' -f 5)"
+echo "        GW IP Addr: $(ip r | grep default | cut -d ' ' -f 9)"
+echo
+echo "   Port Forwarding: ${forwarding}"
+echo "          SSH Port: ${sshport}"
+echo
+echo "   $(date)"
+echo 
+}
+
+
+
+if [[ ${1} == run ]];
+then
+	sysinfo
+	sysoutput
+	exit 1
+fi
+
+while [[ ${1} == loop ]];
+do
+	sysinfo
+	sysoutput
+	sleep 5s
+done
