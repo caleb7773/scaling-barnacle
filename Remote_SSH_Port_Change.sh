@@ -36,15 +36,10 @@ echo "Host ${host}
 echo -e "${GR}Creating SSH Shell Script...${NC}"
 echo "#!/bin/bash
 ssh_port=${ssh_port}
-sudo sed -i \"s/#Port .*./Port ${ssh_port}/g\" /etc/ssh/sshd_config
-sudo sed -i \"s/Port .*./Port ${ssh_port}/g\" /etc/ssh/sshd_config
-sudo sed -i \"s/#PubkeyAuthentication .*./PubkeyAuthentication yes/g\" /etc/ssh/sshd_config
-sudo sed -i \"s/PubkeyAuthentication .*./PubkeyAuthentication yes/g\" /etc/ssh/sshd_config
-sudo sed -i \"s/#PermitRootLogin .*./PermitRootLogin no/g\" /etc/ssh/sshd_config
-sudo sed -i \"s/PermitRootLogin .*./PermitRootLogin no/g\" /etc/ssh/sshd_config
-sudo sed -i \"s/#PasswordAuthentication .*./PasswordAuthentication no/g\" /etc/ssh/sshd_config
-sudo sed -i \"s/PasswordAuthentication .*./PasswordAuthentication no/g\" /etc/ssh/sshd_config
-
+sudo sed -i \"s/.*Port .*/Port ${ssh_port}/g\" /etc/ssh/sshd_config
+sudo sed -i \"s/.*PubkeyAuthentication .*/PubkeyAuthentication yes/g\" /etc/ssh/sshd_config
+sudo sed -i \"s/.*PermitRootLogin .*/PermitRootLogin no/g\" /etc/ssh/sshd_config
+sudo sed -i \"s/.*PasswordAuthentication .*/PasswordAuthentication no/g\" /etc/ssh/sshd_config
 sudo systemctl restart ssh
 " | sudo tee /tmp/ssh.sh > /dev/null
 
